@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Medicine – PharmaChain</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <%- include('_nav') %>
+
+  <div class="max-w-2xl mx-auto px-4 py-10">
+    <h1 class="text-2xl font-bold text-indigo-700 mb-2">🔍 Track Medicine</h1>
+    <p class="text-gray-500 text-sm mb-6">Enter Medicine ID to see full supply chain history.</p>
+
+    <div id="walletInfo" class="hidden bg-indigo-50 border border-indigo-200 rounded-lg p-3 mb-4 text-sm text-indigo-700">
+      👛 <strong id="walletAddress"></strong> &nbsp;|&nbsp; 🌐 <strong id="networkName"></strong>
+    </div>
+    <button id="connectBtn" onclick="connectWallet()"
+      class="bg-indigo-600 text-white px-4 py-2 rounded mb-6 hover:bg-indigo-700">
+      🔗 Connect Wallet
+    </button>
+
+    <div id="errorMsg" class="hidden bg-red-100 text-red-700 border border-red-300 rounded p-3 mb-4"></div>
+
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <div class="flex gap-2">
+        <input id="trackId" placeholder="Enter Medicine ID (e.g. MED001)"
+          class="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+        <button onclick="handleTrack()"
+          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+          🔍 Search
+        </button>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">⚠️ Medicine ID is case-sensitive. Use exact ID used during Add Medicine.</p>
+    </div>
+
+    <div id="trackResult" class="hidden bg-white rounded-lg shadow p-6">
+
+      <h3 class="font-bold text-gray-700 mb-3">📋 Medicine Details</h3>
+      <div class="grid grid-cols-2 gap-3 text-sm mb-4" id="medicineDetails"></div>
+
+      <h3 class="font-bold text-gray-700 mt-6 mb-3">🔗 Lifecycle Timeline</h3>
+      <div id="timeline"></div>
+
+      <div id="qrSection" class="mt-6 text-center hidden">
+        <h3 class="font-bold text-gray-700 mb-2">📱 QR Code</h3>
+        <img id="qrImg" src="" alt="QR" class="mx-auto border rounded" style="width:140px" />
+        <p class="text-xs text-gray-400 mt-1">Customer scans this to verify</p>
+      </div>
+    </div>
+  </div>
+
+  <%- include('_loading') %>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <script>const CONTRACT_ADDRESS = "<%= CONTRACT_ADDRESS %>";</script>
+  <script src="/ui.js"></script>
+  <script>
+    async function handleTrack() {
+      if (!contract) return alert("Connect wallet first.");
+      const id = document.getElementById("trackId").value.trim();
+      if (!id) return alert("Enter a Medicine ID.");
+      document.getElementById("errorMsg").classList.add("hidden");
+      document.getElementById("trackResult").classList.add("hidden");
+
+      setLoading(true, "Fetching from blockchain...");
+      const m = await getMedicine(id);
+      setLoading(false);
+      if (!m || !m.medicineId) return;
+
+      document.getElementById("trackResult").classList.remove("hidden");
+      document.getElementById("medicineDetails").innerHTML = [
+        ["Medicine ID",  m.medicineId],
+        ["Name",         m.name],
+        ["Batch",        m.batchNumber],
+        ["Mfg. Date",    m.manufacturingDate],
+        ["Expiry Date",  m.expiryDate],
+        ["Manufacturer", m.manufacturerName],
+        ["Distributor",  m.distributorName || "—"],
+        ["Pharmacy",     m.pharmacyName    || "—"],
+        ["Owner",        truncate(m.currentOwner)],
+        ["Last Updated", new Date(m.timestamp * 1000).toLocaleString()],
+      ].map(([k, v]) =>
+        `<div class="bg-gray-50 rounded p-2">
+          <span class="text-gray-400 text-xs block">${k}</span>
+          <span class="font-semibold text-sm">${v}</span>
+        </div>`
+      ).join("") +
+      `<div class="col-span-2 bg-gray-50 rounded p-2">
+        <span class="text-gray-400 text-xs block">Status</span>
+        ${statusBadge(m.currentStatus)}
+      </div>`;
+
+      document.getElementById("timeline").innerHTML = renderTimeline(m.currentStatus);
+
+      const dbRes = await fetch(`/api/medicine/${id}`).catch(() => null);
+      if (dbRes && dbRes.ok) {
+        const dbData = await dbRes.json();
+        if (dbData.qrPath) {
+          document.getElementById("qrImg").src = dbData.qrPath;
+          document.getElementById("qrSection").classList.remove("hidden");
+        }
+      }
+    }
+  </script>
+</body>
+</html>

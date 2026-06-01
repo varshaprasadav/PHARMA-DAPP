@@ -1,0 +1,152 @@
+[
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_medicineId", "type": "string" },
+      { "internalType": "string", "name": "_name", "type": "string" },
+      { "internalType": "string", "name": "_batchNumber", "type": "string" },
+      { "internalType": "string", "name": "_manufacturingDate", "type": "string" },
+      { "internalType": "string", "name": "_expiryDate", "type": "string" },
+      { "internalType": "string", "name": "_manufacturerName", "type": "string" }
+    ],
+    "name": "addMedicine",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_medicineId", "type": "string" },
+      { "internalType": "string", "name": "_distributorName", "type": "string" },
+      { "internalType": "address", "name": "_distributorAddress", "type": "address" }
+    ],
+    "name": "assignDistributor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_medicineId", "type": "string" },
+      { "internalType": "string", "name": "_pharmacyName", "type": "string" },
+      { "internalType": "address", "name": "_pharmacyAddress", "type": "address" }
+    ],
+    "name": "assignPharmacy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_medicineId", "type": "string" }],
+    "name": "receiveByDistributor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_medicineId", "type": "string" }],
+    "name": "markAvailableAtPharmacy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_medicineId", "type": "string" }],
+    "name": "sellMedicine",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_medicineId", "type": "string" }],
+    "name": "getMedicine",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "medicineId", "type": "string" },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "string", "name": "batchNumber", "type": "string" },
+          { "internalType": "string", "name": "manufacturingDate", "type": "string" },
+          { "internalType": "string", "name": "expiryDate", "type": "string" },
+          { "internalType": "string", "name": "manufacturerName", "type": "string" },
+          { "internalType": "string", "name": "distributorName", "type": "string" },
+          { "internalType": "string", "name": "pharmacyName", "type": "string" },
+          { "internalType": "address", "name": "currentOwner", "type": "address" },
+          { "internalType": "uint8", "name": "currentStatus", "type": "uint8" },
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+        ],
+        "internalType": "struct Pharma.Medicine",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllMedicineIds",
+    "outputs": [{ "internalType": "string[]", "name": "", "type": "string[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMedicineCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "string", "name": "medicineId", "type": "string" },
+      { "indexed": false, "internalType": "string", "name": "name", "type": "string" },
+      { "indexed": true, "internalType": "address", "name": "owner", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "MedicineAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "string", "name": "medicineId", "type": "string" },
+      { "indexed": false, "internalType": "string", "name": "distributorName", "type": "string" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "DistributorUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "string", "name": "medicineId", "type": "string" },
+      { "indexed": false, "internalType": "string", "name": "pharmacyName", "type": "string" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "PharmacyUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "string", "name": "medicineId", "type": "string" },
+      { "indexed": true, "internalType": "address", "name": "from", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "to", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "string", "name": "medicineId", "type": "string" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "MedicineSold",
+    "type": "event"
+  }
+]

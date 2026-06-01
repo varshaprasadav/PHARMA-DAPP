@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transfer – PharmaChain</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <%- include('_nav') %>
+
+  <div class="max-w-2xl mx-auto px-4 py-10">
+    <h1 class="text-2xl font-bold text-indigo-700 mb-2">🔄 Supply Chain Flow</h1>
+    <p class="text-gray-500 text-sm mb-6">Follow these steps in order. Each role uses a different MetaMask account.</p>
+
+    <div id="walletInfo" class="hidden bg-indigo-50 border border-indigo-200 rounded-lg p-3 mb-6 text-sm text-indigo-700">
+      👛 <strong id="walletAddress"></strong> &nbsp;|&nbsp; 🌐 <strong id="networkName"></strong>
+    </div>
+    <button id="connectBtn" onclick="connectWallet()"
+      class="bg-indigo-600 text-white px-4 py-2 rounded mb-6 hover:bg-indigo-700">
+      🔗 Connect Wallet
+    </button>
+
+    <!-- Flow Steps -->
+    <div class="space-y-4">
+
+      <div class="bg-white rounded-lg shadow p-5 border-l-4 border-indigo-400">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded">Account 1 — Manufacturer</span>
+        </div>
+        <div class="font-bold text-gray-700 mb-1">Step 1: Add Medicine</div>
+        <div class="text-sm text-gray-500 mb-3">Create medicine on blockchain with all details.</div>
+        <a href="/add" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">
+          ➕ Go to Add Medicine
+        </a>
+      </div>
+
+      <div class="flex justify-center text-gray-400 text-xl">↓</div>
+
+      <div class="bg-white rounded-lg shadow p-5 border-l-4 border-yellow-400">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-1 rounded">Account 1 → Account 2</span>
+        </div>
+        <div class="font-bold text-gray-700 mb-1">Step 2: Assign Distributor</div>
+        <div class="text-sm text-gray-500 mb-3">Manufacturer ships medicine to distributor.</div>
+        <a href="/distributor" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded text-sm hover:bg-yellow-600">
+          🚚 Go to Distributor Dashboard
+        </a>
+      </div>
+
+      <div class="flex justify-center text-gray-400 text-xl">↓</div>
+
+      <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-400">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Account 2 — Distributor</span>
+        </div>
+        <div class="font-bold text-gray-700 mb-1">Step 3: Confirm Receipt + Send to Pharmacy</div>
+        <div class="text-sm text-gray-500 mb-3">Distributor confirms receipt, then sends to pharmacy.</div>
+        <a href="/distributor" class="inline-block bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
+          ✅ Go to Distributor Dashboard
+        </a>
+      </div>
+
+      <div class="flex justify-center text-gray-400 text-xl">↓</div>
+
+      <div class="bg-white rounded-lg shadow p-5 border-l-4 border-purple-400">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded">Account 3 — Pharmacy</span>
+        </div>
+        <div class="font-bold text-gray-700 mb-1">Step 4 & 5: Mark Available + Sell</div>
+        <div class="text-sm text-gray-500 mb-3">Pharmacy marks medicine available then sells to customer.</div>
+        <a href="/pharmacy" class="inline-block bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700">
+          💊 Go to Pharmacy Dashboard
+        </a>
+      </div>
+
+      <div class="flex justify-center text-gray-400 text-xl">↓</div>
+
+      <div class="bg-white rounded-lg shadow p-5 border-l-4 border-gray-400">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-1 rounded">Customer — Any Account</span>
+        </div>
+        <div class="font-bold text-gray-700 mb-1">Step 6: Verify Medicine</div>
+        <div class="text-sm text-gray-500 mb-3">Customer scans QR or enters Medicine ID to verify authenticity.</div>
+        <a href="/verify" class="inline-block bg-gray-600 text-white px-4 py-2 rounded text-sm hover:bg-gray-700">
+          📱 Go to Verify Page
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <%- include('_loading') %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <script>const CONTRACT_ADDRESS = "<%= CONTRACT_ADDRESS %>";</script>
+  <script src="/ui.js"></script>
+</body>
+</html>

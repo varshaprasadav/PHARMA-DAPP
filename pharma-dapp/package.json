@@ -1,0 +1,33 @@
+{
+  "name": "pharma-dapp",
+  "version": "1.0.0",
+  "description": "Pharmaceutical Supply Chain Blockchain DApp",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+"events": "node src/events.js",
+  "test": "npx hardhat test",
+
+    "dev": "nodemon src/app.js",
+    "compile": "npx hardhat compile",
+    "deploy:hoodi": "npx hardhat ignition deploy ./ignition/modules/Pharma.ts --network hoodi"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "ethers": "^6.13.2",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1",
+    "qrcode": "^1.5.4",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^0.15.5",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.5",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.8",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.5.4"
+  }
+}
